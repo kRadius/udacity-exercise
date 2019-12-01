@@ -1,5 +1,6 @@
+import 'package:category_widget/03_navigation/navigation_category_widget.dart';
+import 'package:category_widget/03_navigation/unit.dart';
 import 'package:flutter/material.dart';
-import 'package:category_widget/category_widget.dart';
 
 final _backgroundColor = Colors.green[100];
 
@@ -10,8 +11,8 @@ final _backgroundColor = Colors.green[100];
 ///
 /// While it is named CategoryRoute, a more apt name would be CategoryScreen,
 /// because it is responsible for the UI at the route's destination.
-class CategoryRoute extends StatelessWidget {
-  const CategoryRoute();
+class NavigationCategoryRoute extends StatelessWidget {
+  const NavigationCategoryRoute();
 
   static const _categoryNames = <String>[
     'Length',
@@ -35,9 +36,15 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  List<Unit> _retrieveUnits(String name) {
+    return List.generate(10, (int i) {
+      i = i + 1;
+      return Unit(name: name, conversion: i.toDouble());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final listView = Container(
       color: _backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -47,10 +54,12 @@ class CategoryRoute extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             height: 80,
-            child: CategoryWidget(
-                color: _baseColors[index],
-                icon: Icons.cake,
-                name: _categoryNames[index]),
+            child: NavigationCategoryWidget(
+              color: _baseColors[index],
+              icon: Icons.cake,
+              name: _categoryNames[index],
+              units: _retrieveUnits(_categoryNames[index]),
+            ),
           );
         },
       ),

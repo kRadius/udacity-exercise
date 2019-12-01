@@ -6,6 +6,7 @@
 //The InkWell will not animate if the onTap function is null. Use a print statement for now, as a placeholder. i.e. onTap: () { print('I was tapped!'); }.
 //The InkWell's splash and highlight colors should be the color we pass in.
 
+import 'package:category_widget/03_navigation/unit.dart';
 import 'package:flutter/material.dart';
 
 final _rowHeight = 100.0;
@@ -25,15 +26,7 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      elevation: 10.0,
-      title: Text(
-        "CategoryWidget",
-      ),
-      centerTitle: true,
-    );
     return Scaffold(
-        appBar: appBar,
         body: Material(
           color: Colors.transparent,
           child: Container(

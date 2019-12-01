@@ -1,6 +1,8 @@
-import 'package:category_widget/category_route.dart';
-import 'package:category_widget/category_widget.dart';
 import 'package:flutter/material.dart';
+
+import '01_category/category_widget.dart';
+import '02_category_route/category_route.dart';
+import '03_navigation/navigatoin_category_route.dart';
 
 final List<Map> entries = <Map>[
   {
@@ -26,6 +28,17 @@ final List<Map> entries = <Map>[
       ));
     }
   },
+  {
+    'name': 'Navigation',
+    'onClick': (BuildContext context, int index) {
+      Navigator.push(context, MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return NavigationCategoryRoute();
+        },
+      ));
+    }
+  },
+
 ];
 
 void main() {

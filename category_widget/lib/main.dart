@@ -1,3 +1,4 @@
+import 'package:category_widget/04_stateful_widget/stateful_category_route.dart';
 import 'package:flutter/material.dart';
 
 import '01_category/category_widget.dart';
@@ -34,6 +35,16 @@ final List<Map> entries = <Map>[
       Navigator.push(context, MaterialPageRoute<void>(
         builder: (BuildContext context) {
           return NavigationCategoryRoute();
+        },
+      ));
+    }
+  },
+  {
+    'name': 'StatefulWidget',
+    'onClick': (BuildContext context, int index) {
+      Navigator.push(context, MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return StatefulCategoryRoute();
         },
       ));
     }

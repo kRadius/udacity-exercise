@@ -1,4 +1,5 @@
 import 'package:category_widget/04_stateful_widget/stateful_category_route.dart';
+import 'package:category_widget/05_input/input_category_route.dart';
 import 'package:flutter/material.dart';
 
 import '01_category/category_widget.dart';
@@ -11,10 +12,15 @@ final List<Map> entries = <Map>[
     'onClick': (BuildContext context, int index) {
       Navigator.push(context, MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          return CategoryWidget(
-              icon: Icons.cake,
-              color: Colors.redAccent,
-              name: 'RandallStevens');
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("CategoryWidget"),
+            ),
+            body: CategoryWidget(
+                icon: Icons.cake,
+                color: Colors.redAccent,
+                name: 'RandallStevens'),
+          );
         },
       ));
     }
@@ -49,7 +55,16 @@ final List<Map> entries = <Map>[
       ));
     }
   },
-
+  {
+    'name': 'Input',
+    'onClick': (BuildContext context, int index) {
+      Navigator.push(context, MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return InputCategoryRoute();
+        },
+      ));
+    }
+  },
 ];
 
 void main() {
@@ -68,7 +83,8 @@ void main() {
               itemCount: entries.length,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  highlightColor: Colors.amber[200 + 100 * index],
+                  focusColor: Colors.blueGrey[900],
+                  highlightColor: Colors.amber[200 + 200 * index],
                   splashColor: Colors.amber[300 + 100 * index],
                   onTap: () {
                     Function tap = entries[index]['onClick'];
@@ -83,8 +99,9 @@ void main() {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                     '${index + 1}. ${entries[index]['name']}',
-                                    style:
-                                        Theme.of(context).textTheme.headline))),
+                                    style: TextStyle(
+                                        color: Colors.blueGrey[900],
+                                        fontSize: 20)))),
                       )
                     ],
                   ),

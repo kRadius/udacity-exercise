@@ -28,32 +28,32 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Material(
-          color: Colors.transparent,
-          child: Container(
-            height: _rowHeight,
-            child: InkWell(
-              borderRadius: _borderRadius,
-              highlightColor: this.color,
-              splashColor: this.color,
-              onTap: _onInkwellTaped,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(this.icon, size: 60),
-                  ),
-                  Center(
-                    child: Text(
-                      this.name,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                  )
-                ],
+      color: Colors.transparent,
+      child: Container(
+        height: _rowHeight,
+        child: InkWell(
+          borderRadius: _borderRadius,
+          highlightColor: this.color,
+          splashColor: this.color,
+          onTap: _onInkwellTaped,
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(this.icon, size: 60),
               ),
-            ),
+              Center(
+                child: Text(
+                  this.name,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline,
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 
   //Action

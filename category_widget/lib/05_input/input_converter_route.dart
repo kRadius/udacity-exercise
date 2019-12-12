@@ -4,6 +4,7 @@
 
 import 'package:category_widget/03_navigation/unit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
 
@@ -38,7 +39,10 @@ class _InputConverterRouteState extends State<InputConverterRoute> {
   // value and units
 
   // TODO: Determine whether you need to override anything, such as initState()
-
+  @override
+  void initState(){
+    super.initState();
+  }
   // TODO: Add other helper functions. We've given you one, _format()
 
   /// Clean up conversion; trim trailing zeros, e.g. 5.500 -> 5.5, 10.0 -> 10
@@ -61,7 +65,11 @@ class _InputConverterRouteState extends State<InputConverterRoute> {
   Widget build(BuildContext context) {
     // TODO: Create the 'input' group of widgets. This is a Column that
     // includes the input value, and 'from' unit [Dropdown].
+    final inputGroup = Column(
+      children: <Widget>[
 
+      ],
+    );
     // TODO: Create a compare arrows icon.
 
     // TODO: Create the 'output' group of widgets. This is a Column that

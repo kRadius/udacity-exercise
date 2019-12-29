@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
-
-
 const _padding = EdgeInsets.all(16.0);
 
 /// [ConverterRoute] where users can input amounts to convert in one [Unit]
@@ -37,14 +35,117 @@ class InputConverterRoute extends StatefulWidget {
 class _InputConverterRouteState extends State<InputConverterRoute> {
   // TODO: Set some variables, such as for keeping track of the user's input
   // value and units
+  double _inputValue;
+  Unit _fromValue;
+  Unit _toValue;
+  String _convertedValue = '';
+  bool _showValidationError = false;
+  List<DropdownMenuItem<dynamic>> _dropdownItems;
 
-  // TODO: Determine whether you need to override anything, such as initState()
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    _createDropdownMenuItem();
+    _setDefault();
   }
-  // TODO: Add other helper functions. We've given you one, _format()
 
+  void _createDropdownMenuItem() {
+    var items = <DropdownMenuItem>[];
+    for (Unit unit in widget.units) {
+      DropdownMenuItem item = DropdownMenuItem(
+        value: unit.name,
+        child: Container(
+          child: Text(
+            unit.name,
+            softWrap: true,
+          ),
+        ),
+      );
+      items.add(item);
+    }
+    setState(() {
+      _dropdownItems = items;
+    });
+  }
+
+  void _setDefault() {
+    setState(() {
+      _fromValue = widget.units.first;
+      _toValue = widget.units[1];
+    });
+  }
+
+  // Widget
+  Widget _createDropdown(String currentValue, ValueChanged<dynamic> onChanged) {
+    return Container(
+      margin: EdgeInsets.only(top: 16.0),
+      decoration: BoxDecoration(
+          color: Colors.grey[50],
+          border: Border.all(color: Colors.grey[400], width: 1)),
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.grey[50]
+        ),
+        child: DropdownButtonHideUnderline(
+          child: ButtonTheme(
+            alignedDropdown: true,
+            child: DropdownButton(
+              value: currentValue,
+              items: _dropdownItems,
+              onChanged: onChanged,
+              style: Theme.of(context).textTheme.title,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Action
+  void _updateConversion() {
+    setState(() {
+      _convertedValue = _format(_inputValue * (_toValue.conversion / _fromValue.conversion));
+    });
+  }
+  void _updateInputValue(String value) {
+      setState(() {
+        if(value == null || value.isEmpty) {
+          _convertedValue = '';
+        } else {
+          try {
+            var inputDouble = double.parse(value);
+            _showValidationError = false;
+            _inputValue = inputDouble;
+            _updateConversion();
+          } on Exception catch (e) {
+              _showValidationError = true;
+          }
+        }
+      });
+  }
+  void _updateFromConversion(dynamic unitName) {
+    setState(() {
+      _fromValue = _getUnit(unitName);
+    });
+    if (_inputValue != null) {
+      _updateConversion();
+    }
+  }
+  void _updateToConversion(dynamic unitName) {
+    setState(() {
+      _toValue = _getUnit(unitName);
+    });
+    if (_inputValue != null) {
+      _updateConversion();
+    }
+  }
+  // Help functions
+  Unit _getUnit(String name) {
+    return widget.units.firstWhere((Unit unit) {
+      return unit.name == name;
+    }, orElse: null);
+  }
   /// Clean up conversion; trim trailing zeros, e.g. 5.500 -> 5.5, 10.0 -> 10
   String _format(double conversion) {
     var outputNum = conversion.toStringAsPrecision(7);
@@ -63,43 +164,71 @@ class _InputConverterRouteState extends State<InputConverterRoute> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Create the 'input' group of widgets. This is a Column that
+    // Create the 'input' group of widgets. This is a Column that
     // includes the input value, and 'from' unit [Dropdown].
-    final inputGroup = Column(
+    final inputGroup = Padding(
+      padding: _padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          TextField(
+            style: Theme.of(context).textTheme.display1,
+            decoration: InputDecoration(
+                labelStyle: Theme.of(context).textTheme.display1,
+                errorText: _showValidationError ? 'Invalid input error' : null,
+                labelText: 'Input',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0.0))),
+            keyboardType: TextInputType.number,
+            onChanged: _updateInputValue,
+          ),
+          _createDropdown(_fromValue.name, _updateFromConversion)
+        ],
+      ),
+    );
+    // Create a compare arrows icon.
+    final arrows = RotatedBox(
+      quarterTurns: 1,
+      child: Icon(
+        Icons.compare_arrows,
+        size: 40.0,
+      ),
+    );
+    // Create the 'output' group of widgets. This is a Column that
+    // includes the output value, and 'to' unit [Dropdown].
+    final outputGroup = Padding(
+      padding: _padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          InputDecorator(
+            child: Text(
+              _convertedValue,
+              style: Theme.of(context).textTheme.display1,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Output',
+              labelStyle: Theme.of(context).textTheme.display1,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(0.0)
+              )
+            ),
+          ),
+          _createDropdown(_toValue.name, _updateToConversion)
+        ],
+      ),
+    );
+    // Return the input, arrows, and output widgets, wrapped in a Column.
+    final converter = Column(
       children: <Widget>[
-
+        inputGroup,
+        arrows,
+        outputGroup
       ],
     );
-    // TODO: Create a compare arrows icon.
-
-    // TODO: Create the 'output' group of widgets. This is a Column that
-    // includes the output value, and 'to' unit [Dropdown].
-
-    // TODO: Return the input, arrows, and output widgets, wrapped in a Column.
-
-    // TODO: Delete the below placeholder code.
-    final unitWidgets = widget.units.map((Unit unit) {
-      return Container(
-        color: widget.color,
-        margin: EdgeInsets.all(8.0),
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              unit.name,
-              style: Theme.of(context).textTheme.headline,
-            ),
-            Text(
-              'Conversion: ${unit.conversion}',
-              style: Theme.of(context).textTheme.subhead,
-            ),
-          ],
-        ),
-      );
-    }).toList();
-
-    return ListView(
-      children: unitWidgets,
+    return Padding(
+      padding: _padding,
+      child: converter,
     );
   }
 }

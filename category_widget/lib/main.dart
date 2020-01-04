@@ -1,10 +1,11 @@
-import 'package:category_widget/04_stateful_widget/stateful_category_route.dart';
-import 'package:category_widget/05_input/input_category_route.dart';
 import 'package:flutter/material.dart';
 
-import '01_category/category_widget.dart';
-import '02_category_route/category_route.dart';
-import '03_navigation/navigatoin_category_route.dart';
+import 'package:category_widget/01_category/category_widget.dart';
+import 'package:category_widget/02_category_route/category_route.dart';
+import 'package:category_widget/03_navigation/navigatoin_category_route.dart';
+import 'package:category_widget/04_stateful_widget/stateful_category_route.dart';
+import 'package:category_widget/05_input/input_category_route.dart';
+import 'package:category_widget/06_gesture/backdrop_category_route.dart';
 
 final List<Map> entries = <Map>[
   {
@@ -61,6 +62,16 @@ final List<Map> entries = <Map>[
       Navigator.push(context, MaterialPageRoute<void>(
         builder: (BuildContext context) {
           return InputCategoryRoute();
+        },
+      ));
+    }
+  },
+  {
+    'name': 'Backdrop',
+    'onClick': (BuildContext context, int index) {
+      Navigator.push(context, MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return BackdropCategoryRoute();
         },
       ));
     }
